@@ -1,7 +1,7 @@
 ---
 name: Rebat
 description: رباط — subscription university transport for Saudi students. Trustworthy, calm, official-feeling without being cold; Arabic-first RTL with a parallel English/LTR track.
-status: draft
+status: final
 updated: 2026-11-13
 colors:
   primary-default: '#063354'
@@ -188,6 +188,14 @@ The system is organized as semantic pairs (`default` / `soft` / `strong` / `line
 
 Avoid: using `danger` for anything short of destructive/emergency (it dilutes the one signal that should make a user stop and read); reusing `accent` as a generic "positive" color where `success` is more precise; introducing a new chromatic color outside this set.
 
+**Tokens defined but not currently wired to any component:** `scrim`, `focus`, `hover-wash`, `gradient-from/via/to`, `on-primary-inverse`, `on-accent`, `on-success`, `primary-inverse`, `success-solid`, and the `*-strong`/`*-soft-strong`/`*-line-strong` variants across `danger`/`warning`. These aren't wrong — `scrim` and `gradient-*` are referenced in prose above (Elevation & Depth, Brand & Style) even without a `components` entry — but a downstream consumer can't tell from this file alone whether the rest are load-bearing or carried over from the raw Figma token export. Treat them as raw-palette-available, not yet assigned, until wired into a `components` entry or explicitly retired.
+
+**Known contrast failures (computed from the hex values above, not yet fixed in the design):**
+- `status-badge-brand` — `accent-default` (`#16c79a`) text on `accent-soft` (`#f3fcfa`) = **2.08:1**. Fails even the 3:1 large-text/UI-component floor. `accent-default` was built to sit on dark/navy backgrounds (it doubles as `primary-inverse`), not as text on near-white. **Fix before shipping this badge tone:** either introduce a darker `accent-strong`/`accent-text` token for text-on-light use, or route this badge through `success-default` instead, consistent with Brand & Style's own framing of accent as "success-adjacent."
+- `status-badge-negative` — `danger-default` (`#e11d48`) text on `danger-soft` (`#fff1f2`) = **4.28:1**. Fails the 4.5:1 normal-text AA threshold (clears 3:1 large-text/UI-component only), and the system's smallest observed text size is 10.5px — normal-text territory. **Fix:** darken to `danger-strong` (`#be123c`) for this pairing, or confirm the actual rendered badge text qualifies as large text (≥18.66px bold / ≥24px regular) before leaving as-is.
+- `rating` (`#f59e0b`) on white = **2.15:1**. Likely fine as a filled icon glyph (no contrast requirement for large graphical elements) but fails badly if ever rendered as text or a thin outline stroke. **Fix:** confirm `rating` never renders as text/thin-stroke; if it does, supply a darker variant for that case.
+- Every other soft/strong badge pairing passes AA (success 5.28:1, warning 4.84:1, info 4.75:1, neutral 7.38:1) — the two failures above are the exception, not the pattern.
+
 ## Typography
 
 **Tajawal** throughout, chosen for strong Arabic letterforms that also render cleanly in Latin for the English/LTR track — this is why there's one font family doing both jobs rather than a per-language pairing. Weight carries hierarchy more than size: headings and emphasis use Tajawal Bold (700), body text uses Tajawal Regular (400). The smallest observed size in the live file is 10.5px (design-token captions, the tightest badge text) — treat that as a practical floor, not a target; body copy throughout the audited screens reads comfortably larger.
@@ -217,6 +225,8 @@ Rounded corners throughout, scaling with surface size: `rounded.sm` (8px) for in
 - **AppBar / BottomNav / DriverNav / AdminSidebar / AdminTopbar / TabHeader** — the full navigation chrome set, each with RTL and LTR variants built in rather than mirrored at runtime.
 - **Avatar** (3 sizes: 32/44/56px) and **Switch** (on/off) — standard utility components appearing throughout settings and list rows.
 - **Logo/lockup** — navy and inverse (white) tone variants, for use on light and dark/`surface-inverse` backgrounds respectively.
+- **Bottom sheet** (unnamed as a token in the design-system file, but the single most-used surface pattern in the product) — rises from the bottom over a `scrim` (`#02101a`) backdrop rather than a shadow; `surface-raised` background, `rounded.md` top corners only. Used for every confirmation, payment state, and cancellation-reason flow across all three surfaces — see `EXPERIENCE.md` → Component Patterns for its behavioral contract (consequence-copy-before-action).
+- **Reason-capture field** — a structured dropdown (reason categories) paired with an optional free-text area beneath it; used for rejections, cancellations, and disputes. Visually: standard `TextField` styling for the free-text portion, a `ChoicePill`-style or native select for the dropdown. See `EXPERIENCE.md` → Component Patterns for which flows use the structured version vs. the free-text-only exception.
 
 ## Do's and Don'ts
 
