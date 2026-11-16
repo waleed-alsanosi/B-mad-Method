@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة الأدمن — حسم نزاع</title>
+<style>
+/* Governing spine sections: EXPERIENCE.md → IA (لوحة الأدمن: النزاعات), Key Flows UJ-3, Voice and Tone (رسائل النزاع) · DESIGN.md → Components (admin-table-row, status-pill), Shapes (admin = rounded.sm), Elevation (borders not shadows)
+   Tokens: DESIGN.md frontmatter (colors, rounded, spacing, components). Spines win on conflict. */
+
+:root{--primary:#B0561F;--primary-dark:#8A4217;--primary-tint:#F1DCC9;--secondary:#1F4B4A;--secondary-tint:#D9E6E5;
+--gold:#D4A13D;--base:#FBF7F1;--raised:#FFFFFF;--admin:#F4F6F6;--border:#E7DFD3;--border-admin:#DCE2E1;
+--text:#241C14;--text2:#6B5F50;--success:#256B46;--success-bg:#DCEFE2;--danger:#B3342A;--danger-bg:#F6DEDB;--warning:#C77C11}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"IBM Plex Sans Arabic",Tajawal,"Segoe UI",Tahoma,system-ui,sans-serif;background:#ECE6DC;color:var(--text);padding:32px 16px;line-height:1.6}
+h1.page{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:22px;text-align:center;margin-bottom:4px}
+p.page{text-align:center;color:var(--text2);font-size:13px;margin-bottom:28px}
+.row{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+.col{display:flex;flex-direction:column;align-items:center;gap:10px}
+.cap{font-size:13px;color:var(--text2);max-width:340px;text-align:center}
+.phone{width:340px;height:700px;background:var(--base);border-radius:36px;border:8px solid #2a2420;overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:0 12px 32px rgba(36,28,20,.18)}
+.status{height:30px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;font-size:12px;font-weight:600;flex:none}
+.top{padding:8px 16px 12px;display:flex;align-items:center;justify-content:space-between;flex:none}
+.top h2{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:20px}
+.top .sub{font-size:12px;color:var(--text2)}
+.scroll{flex:1;overflow:hidden;padding:0 16px 16px}
+.h{font-family:Tajawal,system-ui,sans-serif;font-weight:700}
+.btn{display:block;width:100%;text-align:center;padding:12px 24px;border-radius:10px;font-weight:600;font-size:15px;border:none;font-family:inherit}
+.btn.p{background:var(--primary);color:#fff}
+.btn.s{background:transparent;border:1px solid var(--secondary);color:var(--secondary)}
+.btn.d{background:transparent;border:1px solid var(--danger);color:var(--danger)}
+.pill{display:inline-block;white-space:nowrap;border-radius:9999px;padding:4px 12px;font-size:12px;font-weight:600}
+.pill.pending{background:var(--primary-tint);color:var(--primary-dark)}
+.pill.success{background:var(--success-bg);color:var(--success)}
+.pill.danger{background:var(--danger-bg);color:var(--danger)}
+.card{background:var(--raised);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 1px 3px rgba(36,28,20,.06)}
+.num{font-variant-numeric:tabular-nums;font-weight:500}
+.muted{color:var(--text2);font-size:13px}
+.line{display:flex;justify-content:space-between;font-size:14px;padding:6px 0}
+.line.total{border-top:1px solid var(--border);margin-top:6px;padding-top:10px;font-weight:600;font-size:16px}
+.nav{height:60px;border-top:1px solid var(--border);background:var(--raised);display:flex;justify-content:space-around;align-items:center;font-size:11px;color:var(--text2);flex:none}
+.nav .on{color:var(--primary);font-weight:600}
+
+.browser{width:1080px;max-width:100%;background:var(--admin);border-radius:12px;border:1px solid #c9c2b6;overflow:hidden;box-shadow:0 12px 32px rgba(36,28,20,.18)}
+.bar{background:#e3ddd2;padding:8px 14px;font-size:12px;color:var(--text2);display:flex;gap:10px;align-items:center}
+.bar .u{background:#fff;border-radius:6px;padding:3px 12px;flex:1;direction:ltr;text-align:left}
+.app{display:grid;grid-template-columns:200px 1fr;min-height:620px}
+.side{background:var(--raised);border-left:1px solid var(--border-admin);padding:18px 12px;font-size:14px}
+.side .b{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:18px;margin-bottom:18px;padding:0 8px}
+.side div.i{padding:8px;border-radius:6px;color:var(--text2);display:flex;justify-content:space-between}
+.side div.i.on{background:var(--secondary-tint);color:var(--secondary);font-weight:600}
+.main{padding:22px 26px}
+.main h2{font-family:Tajawal,system-ui,sans-serif;font-weight:700;font-size:20px}
+table{width:100%;border-collapse:collapse;background:var(--raised);border:1px solid var(--border-admin);border-radius:6px;font-size:13px;margin-top:12px}
+th{white-space:nowrap;text-align:right;padding:9px 12px;color:var(--text2);font-weight:500;border-bottom:1px solid var(--border-admin);background:var(--admin)}
+td.num{white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--border-admin)}
+tr.sel td{background:var(--secondary-tint)}
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-top:16px}
+.panel{background:var(--raised);border:1px solid var(--border-admin);border-radius:6px;padding:16px;font-size:13px}
+.panel h3{font-size:14px;margin-bottom:10px}
+.tl div{padding:5px 0;display:flex;justify-content:space-between;border-bottom:1px dashed var(--border-admin)}
+.ev{display:flex;gap:8px;margin-top:8px}.ev span{width:64px;height:64px;border-radius:6px;background:var(--admin);border:1px solid var(--border-admin);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text2)}
+.opt{border:1px solid var(--border-admin);border-radius:6px;padding:9px 12px;margin-bottom:8px;display:flex;justify-content:space-between}
+.opt.on{border-color:var(--secondary);background:var(--secondary-tint)}
+.in{border:1px solid var(--border-admin);border-radius:6px;padding:8px 10px;margin:6px 0 12px;min-height:54px;color:var(--text2)}
+.btn.a{background:var(--secondary);color:#fff;border-radius:6px;font-size:14px;padding:10px}
+.hint{background:var(--admin);border-radius:6px;padding:8px 10px;margin-bottom:12px;color:var(--text2)}
+
+</style></head><body>
+<h1 class="page">لوحة الأدمن — حسم نزاع</h1><p class="page">ويب فقط · قائمة النزاعات + تفاصيل وقرار</p>
+<div class="row"><div class="col"><div class="browser">
+<div class="bar"><span>● ● ●</span><span class="u">admin.tawzee.example/disputes/1029</span></div>
+<div class="app">
+<div class="side"><div class="b">تَوزيع · الأدمن</div>
+<div class="i">اعتماد الموردين <span class="num">3</span></div><div class="i">الطلبات والمبيعات</div><div class="i on">النزاعات <span class="num">2</span></div></div>
+<div class="main"><h2>النزاعات</h2>
+<table><tr><th>رقم الطلب</th><th>جهة الطلب</th><th>المورد</th><th>سبب النزاع</th><th>تاريخ الرفع</th><th>القيمة</th><th>الحالة</th></tr>
+<tr class="sel"><td class="num">#1029</td><td>شركة المدار</td><td>مصنع الخزف الحديث</td><td>الشعار المطبوع لا يطابق الملف</td><td class="num">2026-11-14</td><td class="num">11,400.00 ر.س</td><td><span class="pill pending">◷ مفتوح</span></td></tr>
+<tr><td class="num">#1017</td><td>روضة البراعم</td><td>قرطاسية النخبة</td><td>تأخر التسليم عن الموعد</td><td class="num">2026-11-12</td><td class="num">2,175.00 ر.س</td><td><span class="pill pending">◷ مفتوح</span></td></tr></table>
+<div class="two">
+<div class="panel"><h3>تفاصيل النزاع — طلب #1029</h3>
+<div class="tl"><div><span>تم الدفع (محجوز)</span><span class="num">2026-11-06</span></div><div><span>وافق المورد على التخصيص</span><span class="num">2026-11-05</span></div><div><span>تم الشحن</span><span class="num">2026-11-12</span></div><div><span>رُفع النزاع — <strong>شُحن ولم يُؤكَّد الاستلام</strong></span><span class="num">2026-11-14</span></div></div>
+<h3 style="margin-top:14px">الدليل من جهة الطلب</h3><p>"الشعار مطبوع بلون مختلف عن الملف المرسل على نحو ثلث الأكواب."</p>
+<div class="ev"><span>صورة 1</span><span>صورة 2</span><span>صورة 3</span></div></div>
+<div class="panel"><h3>القرار</h3>
+<div class="hint">المعيار المبدئي: شُحن ولم يُسلَّم + خلاف على مطابقة التخصيص ← استرجاع جزئي بعد مراجعة الدليل.</div>
+<div class="opt">استرجاع كامل <span>○</span></div>
+<div class="opt on">استرجاع جزئي <span><span class="num">30</span>% = <span class="num">3,420.00</span> ر.س ●</span></div>
+<div class="opt">رفض الاسترجاع <span>○</span></div>
+<div style="font-weight:600">ملاحظة القرار (إلزامية — تُسجَّل في سجل الطلب)</div>
+<div class="in">الصور تُظهر اختلاف اللون في جزء من الكمية…</div>
+<span class="btn a">اعتماد القرار وإشعار الطرفين</span></div>
+</div></div></div></div>
+<div class="cap" style="max-width:820px">لوحة الأدمن: جدول كثيف بحدود خطية بلا ظلال، لون الثقة بدل التراكوتا، زوايا صغيرة. القرار يتبع معيار FR-12 الثلاثي مع ملاحظة إلزامية. (FR-12، UJ-3 — رحلة مؤلَّفة من دريمي، بانتظار المراجعة)</div></div></div>
+</body></html>

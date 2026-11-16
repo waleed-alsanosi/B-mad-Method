@@ -6,8 +6,8 @@ updated: 2026-11-16
 sources:
   - _bmad-output/planning-artifacts/prds/prd-tawzee-2026-11-16/prd.md
 colors:
-  brand-primary: '#C2662E'
-  brand-primary-dark: '#9C4F22'
+  brand-primary: '#B0561F'
+  brand-primary-dark: '#8A4217'
   brand-primary-tint: '#F1DCC9'
   brand-secondary: '#1F4B4A'
   brand-secondary-tint: '#D9E6E5'
@@ -20,7 +20,7 @@ colors:
   text-primary: '#241C14'
   text-secondary: '#6B5F50'
   text-inverse: '#FFFFFF'
-  success: '#2E7D53'
+  success: '#256B46'
   warning: '#C77C11'
   danger: '#B3342A'
   info: '#2C6E8E'
@@ -137,7 +137,7 @@ components:
 
 ## الظل والعمق (Elevation & Depth)
 
-ظل خفيف جدًا ({radius-friendly, soft shadow}) على البطاقات العائمة (بطاقة المنتج، نافذة الدردشة) للإيحاء بإمكانية اللمس دون ثقل بصري. سطح الأدمن يستخدم حدودًا خطية (`{colors.border-admin}`) بدل الظلال في الجداول — تمييز متعمد: الظل للمحتوى الاحتفالي القابل للمس، الخط للبيانات الكثيفة القابلة للمسح السريع.
+ظل خفيف جدًا وناعم على البطاقات العائمة (بطاقة المنتج، نافذة الدردشة) للإيحاء بإمكانية اللمس دون ثقل بصري. سطح الأدمن يستخدم حدودًا خطية (`{colors.border-admin}`) بدل الظلال في الجداول — تمييز متعمد: الظل للمحتوى الاحتفالي القابل للمس، الخط للبيانات الكثيفة القابلة للمسح السريع.
 
 ## الأشكال (Shapes)
 

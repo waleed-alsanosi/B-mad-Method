@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تطبيق المورد — الطلبات الواردة</title>
+<style>
+/* Governing spine sections: EXPERIENCE.md → IA (تطبيق المورد: الطلبات الواردة), State Patterns (حالة الطلب), Key Flows UJ-2 step 5 · DESIGN.md → Components (status-pill, button-primary)
+   Tokens: DESIGN.md frontmatter (colors, rounded, spacing, components). Spines win on conflict. */
+
+:root{--primary:#B0561F;--primary-dark:#8A4217;--primary-tint:#F1DCC9;--secondary:#1F4B4A;--secondary-tint:#D9E6E5;
+--gold:#D4A13D;--base:#FBF7F1;--raised:#FFFFFF;--admin:#F4F6F6;--border:#E7DFD3;--border-admin:#DCE2E1;
+--text:#241C14;--text2:#6B5F50;--success:#256B46;--success-bg:#DCEFE2;--danger:#B3342A;--danger-bg:#F6DEDB;--warning:#C77C11}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"IBM Plex Sans Arabic",Tajawal,"Segoe UI",Tahoma,system-ui,sans-serif;background:#ECE6DC;color:var(--text);padding:32px 16px;line-height:1.6}
+h1.page{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:22px;text-align:center;margin-bottom:4px}
+p.page{text-align:center;color:var(--text2);font-size:13px;margin-bottom:28px}
+.row{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+.col{display:flex;flex-direction:column;align-items:center;gap:10px}
+.cap{font-size:13px;color:var(--text2);max-width:340px;text-align:center}
+.phone{width:340px;height:700px;background:var(--base);border-radius:36px;border:8px solid #2a2420;overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:0 12px 32px rgba(36,28,20,.18)}
+.status{height:30px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;font-size:12px;font-weight:600;flex:none}
+.top{padding:8px 16px 12px;display:flex;align-items:center;justify-content:space-between;flex:none}
+.top h2{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:20px}
+.top .sub{font-size:12px;color:var(--text2)}
+.scroll{flex:1;overflow:hidden;padding:0 16px 16px}
+.h{font-family:Tajawal,system-ui,sans-serif;font-weight:700}
+.btn{display:block;width:100%;text-align:center;padding:12px 24px;border-radius:10px;font-weight:600;font-size:15px;border:none;font-family:inherit}
+.btn.p{background:var(--primary);color:#fff}
+.btn.s{background:transparent;border:1px solid var(--secondary);color:var(--secondary)}
+.btn.d{background:transparent;border:1px solid var(--danger);color:var(--danger)}
+.pill{display:inline-block;white-space:nowrap;border-radius:9999px;padding:4px 12px;font-size:12px;font-weight:600}
+.pill.pending{background:var(--primary-tint);color:var(--primary-dark)}
+.pill.success{background:var(--success-bg);color:var(--success)}
+.pill.danger{background:var(--danger-bg);color:var(--danger)}
+.card{background:var(--raised);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 1px 3px rgba(36,28,20,.06)}
+.num{font-variant-numeric:tabular-nums;font-weight:500}
+.muted{color:var(--text2);font-size:13px}
+.line{display:flex;justify-content:space-between;font-size:14px;padding:6px 0}
+.line.total{border-top:1px solid var(--border);margin-top:6px;padding-top:10px;font-weight:600;font-size:16px}
+.nav{height:60px;border-top:1px solid var(--border);background:var(--raised);display:flex;justify-content:space-around;align-items:center;font-size:11px;color:var(--text2);flex:none}
+.nav .on{color:var(--primary);font-weight:600}
+
+.field{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--raised);font-size:14px;display:flex;justify-content:space-between;margin-top:6px}
+.lbl{font-size:13px;font-weight:600;margin-top:14px}
+.prev{height:72px;border-radius:10px;background:var(--secondary-tint);display:flex;align-items:center;justify-content:center;color:var(--secondary);font-size:13px;margin-top:8px}
+.foot{padding:12px 16px 16px;border-top:1px solid var(--border);background:var(--raised);flex:none;display:grid;grid-template-columns:2fr 1fr;gap:8px}
+.oc{margin-bottom:10px}
+.oc .r{display:flex;justify-content:space-between;align-items:center}
+
+</style></head><body>
+<h1 class="page">تطبيق المورد — الطلبات الواردة</h1><p class="page">قائمة الطلبات + شاشة قرار قبول/رفض التخصيص</p>
+<div class="row">
+<div class="col"><div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div>
+<div class="top"><div><h2>الطلبات الواردة</h2><div class="sub">دار الهدايا · مورد معتمد</div></div></div>
+<div class="scroll">
+<div class="card oc"><div class="r"><strong>طلب #1042</strong><span class="pill pending">◷ بانتظار ردّك</span></div><div class="muted">مدرسة الأفق الأهلية · <span class="num">500</span> صندوق هدية · تخصيص بالشعار</div><div class="muted" style="color:var(--primary-dark);font-weight:600">متبقٍ للرد: <span class="num">18:42</span> ساعة</div></div>
+<div class="card oc"><div class="r"><strong>طلب #1038</strong><span class="pill success">✓ مدفوع — قيد التجهيز</span></div><div class="muted">شركة المدار · <span class="num">1,200</span> كوب سيراميك</div></div>
+<div class="card oc"><div class="r"><strong>طلب #1031</strong><span class="pill success">✓ تم التسليم</span></div><div class="muted">روضة البراعم · <span class="num">300</span> دفتر وقلم</div></div>
+</div><div class="nav"><span class="on">الطلبات</span><span>الكتالوج</span><span>المحادثات</span><span>حسابي</span></div></div>
+<div class="cap">قائمة الطلبات: نفس status-pill ونفس منطق الألوان الذي تراه جهة الطلب. (FR-4، Component Patterns)</div></div>
+
+<div class="col"><div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div>
+<div class="top"><div><div class="sub">→ الطلبات الواردة</div><h2 style="font-size:18px">طلب #1042</h2></div></div>
+<div class="scroll">
+<div class="card"><div class="line"><span>المنتج</span><span>صندوق هدية صغير</span></div><div class="line"><span>الكمية</span><span class="num">500</span></div><div class="line"><span>قيمة المنتجات</span><span class="num">6,000.00 ر.س</span></div><div class="line"><span>الاستلام</span><span>توصيل — الرياض</span></div></div>
+<div class="lbl">الشعار المطلوب طباعته</div><div class="prev">معاينة: شعار-المدرسة.png</div>
+<div class="lbl">رسوم التخصيص (اختياري)</div><div class="field"><span class="num">250.00</span><span class="muted">ر.س</span></div>
+<div class="lbl">رسوم التوصيل</div><div class="field"><span class="num">150.00</span><span class="muted">ر.س</span></div>
+<div class="muted" style="margin-top:10px">عمولة تَوزيع 5% تُخصم من مستحقاتك عند الصرف.</div>
+</div>
+<div class="foot"><span class="btn p">قبول الطلب</span><span class="btn d">رفض</span></div></div>
+<div class="cap">قرار المورد: معاينة الشعار، حقل رسوم تخصيص اختياري ورسوم توصيل، قبول أو رفض (الرفض يطلب سببًا إلزاميًا). (FR-4، FR-13، UJ-2 الخطوة 5)</div></div>
+</div>
+</body></html>
