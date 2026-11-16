@@ -25,7 +25,7 @@ sources:
 - **الرئيسية/التصفح** — كتالوج بفلاتر (مناسبة، نوع منتج، كمية، مدينة) → يحقق FR-1
 - **تفاصيل المنتج** → FR-2
 - **السلة وتحديد الكمية والتخصيص** (رفع شعار اختياري) → FR-3، FR-4
-- **تتبع الطلب** (حالة + شات مقنّع مع المورد) → FR-4، FR-6، FR-7
+- **تتبع الطلب** (حالة + شات مقنّع مع المورد + رفع نزاع بعد الدفع) → FR-4، FR-6، FR-7، FR-12
 - **الدفع** (يُفعَّل فقط بعد موافقة المورد) → FR-5
 - **سجل الطلبات** (طلبات سابقة وحالية)
 - **الحساب** (بيانات، التحقق من الهاتف) → FR-15
@@ -116,13 +116,23 @@ sources:
 
 ## الشاشات المرجعية (Mockups)
 
-أربع شاشات HTML بمقياس 1:1 توضّح الأسطح الحاملة للتصميم. هذه الوثيقة و`DESIGN.md` هما العقد؛ عند أي تعارض مع شاشة مرجعية، الوثيقتان تغلبان.
+27 شاشة بمقياس 1:1 تغطي كل أسطح معمارية المعلومات. هذه الوثيقة و`DESIGN.md` هما العقد؛ عند أي تعارض مع شاشة مرجعية، الوثيقتان تغلبان.
 
-| الشاشة | الملف | ما توضّحه |
+**ملف فيغما:** https://www.figma.com/design/xo8TVFRlfd4MimTajXSgCn — أربعة أقسام: تطبيق العميل (13)، ويب العميل (2)، تطبيق المورد (8)، لوحة الأدمن (4). الشاشات في فيغما طبقات عادية محوَّلة من ملفات HTML أدناه، بلا مكوّنات أو متغيرات.
+
+| ملف HTML | الشاشات | ما توضّحه |
 |---|---|---|
-| تطبيق العميل — تصفح الكتالوج | [mockups/key-customer-catalog.html](mockups/key-customer-catalog.html) | FR-1، بطاقة المنتج، فلاتر Chips، الحالة الفارغة |
-| تطبيق العميل — حالة الطلب والدفع | [mockups/key-customer-order-status.html](mockups/key-customer-order-status.html) | FR-4، FR-5، FR-13، FR-14؛ انتظار الموافقة، الدفع بعد الموافقة، حالة الرفض |
-| تطبيق المورد — الطلبات الواردة | [mockups/key-supplier-incoming-order.html](mockups/key-supplier-incoming-order.html) | FR-4، FR-13؛ قرار قبول/رفض مع رسوم التخصيص والتوصيل |
-| لوحة الأدمن — حسم نزاع | [mockups/key-admin-dispute.html](mockups/key-admin-dispute.html) | FR-12، UJ-3 |
+| [mockups/key-customer-signup-product-cart.html](mockups/key-customer-signup-product-cart.html) | التحقق برمز OTP، تفاصيل المنتج، الكمية والتخصيص | FR-15، FR-2، FR-3، FR-4 |
+| [mockups/key-customer-catalog.html](mockups/key-customer-catalog.html) | تصفح الكتالوج، تصفح بلا نتائج | FR-1، الحالة الفارغة |
+| [mockups/key-customer-order-status.html](mockups/key-customer-order-status.html) | بانتظار موافقة المورد، الدفع بعد الموافقة، رُفض التخصيص | FR-4، FR-5، FR-13، FR-14 |
+| [mockups/key-customer-tracking-chat-dispute.html](mockups/key-customer-tracking-chat-dispute.html) | تتبع الطلب، طلباتي، الشات المقنّع، رفع نزاع، حسابي | FR-6، FR-7، FR-12 |
+| [mockups/key-customer-web.html](mockups/key-customer-web.html) | ويب العميل: التصفح، الدفع | نسخة الويب بشبكة 4 أعمدة |
+| [mockups/key-supplier-onboarding-catalog.html](mockups/key-supplier-onboarding-catalog.html) | طلب الانضمام، بانتظار الاعتماد، الكتالوج، منتج جديد | FR-8، FR-9، FR-10 |
+| [mockups/key-supplier-incoming-order.html](mockups/key-supplier-incoming-order.html) | الطلبات الواردة، قرار الطلب | FR-4، FR-13 |
+| [mockups/key-supplier-reject-fulfil.html](mockups/key-supplier-reject-fulfil.html) | رفض التخصيص، تنفيذ الطلب | FR-4، FR-6 |
+| [mockups/key-admin-login-suppliers-orders.html](mockups/key-admin-login-suppliers-orders.html) | تسجيل الدخول، اعتماد الموردين، الطلبات والمبيعات | FR-16، FR-9، FR-11 |
+| [mockups/key-admin-dispute.html](mockups/key-admin-dispute.html) | حسم نزاع | FR-12، UJ-3 |
 
-**أسطح بلا شاشة مرجعية (تُبنى من الوثيقتين فقط):** تفاصيل المنتج، السلة ورفع الشعار، التسجيل وOTP، سجل الطلبات، الشات، إدارة كتالوج المورد، اعتماد الموردين ومراقبة الطلبات في الأدمن، ونسخة ويب العميل (نفس التدفقات بشبكة 3–4 أعمدة).
+**لم تُرسم:** نسخ الويب لباقي شاشات العميل (تتبع نفس شاشات الموبايل بتخطيط عمودين)، وشات المورد (نفس مكوّن شات العميل).
+
+`[NOTE FOR UX]` شاشة "رفع نزاع" من جهة الطلب أُضيفت أثناء الرسم لأن FR-12 يفترض دليلًا من جهة الطلب ولم يكن لها سطح في معمارية المعلومات. أسباب النزاع الثلاثة فيها افتراض.

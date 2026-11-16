@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة الأدمن — الدخول، اعتماد الموردين، الطلبات</title>
+<style>
+/* Governing spine sections: EXPERIENCE.md → IA (لوحة الأدمن) · DESIGN.md → Components (admin-table-row), Shapes, Elevation
+   Tokens: DESIGN.md frontmatter (colors, rounded, spacing, components). Spines win on conflict. */
+
+:root{--primary:#B0561F;--primary-dark:#8A4217;--primary-tint:#F1DCC9;--secondary:#1F4B4A;--secondary-tint:#D9E6E5;
+--gold:#D4A13D;--base:#FBF7F1;--raised:#FFFFFF;--admin:#F4F6F6;--border:#E7DFD3;--border-admin:#DCE2E1;
+--text:#241C14;--text2:#6B5F50;--success:#256B46;--success-bg:#DCEFE2;--danger:#B3342A;--danger-bg:#F6DEDB;--warning:#C77C11}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"IBM Plex Sans Arabic",Tajawal,"Segoe UI",Tahoma,system-ui,sans-serif;background:#ECE6DC;color:var(--text);padding:32px 16px;line-height:1.6}
+h1.page{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:22px;text-align:center;margin-bottom:4px}
+p.page{text-align:center;color:var(--text2);font-size:13px;margin-bottom:28px}
+.row{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+.col{display:flex;flex-direction:column;align-items:center;gap:10px}
+.cap{font-size:13px;color:var(--text2);max-width:340px;text-align:center}
+.phone{width:340px;height:700px;background:var(--base);border-radius:36px;border:8px solid #2a2420;overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:0 12px 32px rgba(36,28,20,.18)}
+.status{height:30px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;font-size:12px;font-weight:600;flex:none}
+.top{padding:8px 16px 12px;display:flex;align-items:center;justify-content:space-between;flex:none}
+.top h2{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:20px}
+.top .sub{font-size:12px;color:var(--text2)}
+.scroll{flex:1;overflow:hidden;padding:0 16px 16px}
+.h{font-family:Tajawal,system-ui,sans-serif;font-weight:700}
+.btn{display:block;width:100%;text-align:center;padding:12px 24px;border-radius:10px;font-weight:600;font-size:15px;border:none;font-family:inherit}
+.btn.p{background:var(--primary);color:#fff}
+.btn.s{background:transparent;border:1px solid var(--secondary);color:var(--secondary)}
+.btn.d{background:transparent;border:1px solid var(--danger);color:var(--danger)}
+.pill{display:inline-block;white-space:nowrap;border-radius:9999px;padding:4px 12px;font-size:12px;font-weight:600}
+.pill.pending{background:var(--primary-tint);color:var(--primary-dark)}
+.pill.success{background:var(--success-bg);color:var(--success)}
+.pill.danger{background:var(--danger-bg);color:var(--danger)}
+.card{background:var(--raised);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 1px 3px rgba(36,28,20,.06)}
+.num{font-variant-numeric:tabular-nums;font-weight:500}
+.muted{color:var(--text2);font-size:13px}
+.line{display:flex;justify-content:space-between;font-size:14px;padding:6px 0}
+.line.total{border-top:1px solid var(--border);margin-top:6px;padding-top:10px;font-weight:600;font-size:16px}
+.nav{height:60px;border-top:1px solid var(--border);background:var(--raised);display:flex;justify-content:space-around;align-items:center;font-size:11px;color:var(--text2);flex:none}
+.nav .on{color:var(--primary);font-weight:600}
+
+.browser{width:1080px;max-width:100%;background:var(--admin);border-radius:12px;border:1px solid #c9c2b6;overflow:hidden;box-shadow:0 12px 32px rgba(36,28,20,.18)}
+.bar{background:#e3ddd2;padding:8px 14px;font-size:12px;color:var(--text2);display:flex;gap:10px;align-items:center}
+.bar .u{background:#fff;border-radius:6px;padding:3px 12px;flex:1;direction:ltr;text-align:left}
+.app{display:grid;grid-template-columns:200px 1fr;min-height:620px}
+.side{background:var(--raised);border-left:1px solid var(--border-admin);padding:18px 12px;font-size:14px}
+.side .b{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:18px;margin-bottom:18px;padding:0 8px}
+.side div.i{padding:8px;border-radius:6px;color:var(--text2);display:flex;justify-content:space-between}
+.side div.i.on{background:var(--secondary-tint);color:var(--secondary);font-weight:600}
+.main{padding:22px 26px}
+.main h2{font-family:Tajawal,system-ui,sans-serif;font-weight:700;font-size:20px}
+table{width:100%;border-collapse:collapse;background:var(--raised);border:1px solid var(--border-admin);border-radius:6px;font-size:13px;margin-top:12px}
+th{white-space:nowrap;text-align:right;padding:9px 12px;color:var(--text2);font-weight:500;border-bottom:1px solid var(--border-admin);background:var(--admin)}
+td.num{white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--border-admin)}
+tr.sel td{background:var(--secondary-tint)}
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-top:16px}
+.panel{background:var(--raised);border:1px solid var(--border-admin);border-radius:6px;padding:16px;font-size:13px}
+.panel h3{font-size:14px;margin-bottom:10px}
+.tl div{padding:5px 0;display:flex;justify-content:space-between;border-bottom:1px dashed var(--border-admin)}
+.ev{display:flex;gap:8px;margin-top:8px}.ev span{width:64px;height:64px;border-radius:6px;background:var(--admin);border:1px solid var(--border-admin);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text2)}
+.opt{border:1px solid var(--border-admin);border-radius:6px;padding:9px 12px;margin-bottom:8px;display:flex;justify-content:space-between}
+.opt.on{border-color:var(--secondary);background:var(--secondary-tint)}
+.in{border:1px solid var(--border-admin);border-radius:6px;padding:8px 10px;margin:6px 0 12px;min-height:54px;color:var(--text2)}
+.btn.a{background:var(--secondary);color:#fff;border-radius:6px;font-size:14px;padding:10px}
+.hint{background:var(--admin);border-radius:6px;padding:8px 10px;margin-bottom:12px;color:var(--text2)}
+
+.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+.kp div{background:var(--raised);border:1px solid var(--border-admin);border-radius:6px;padding:12px;font-size:12px;color:var(--text2)}
+.kp b{display:block;font-size:20px;color:var(--text);font-variant-numeric:tabular-nums}
+.login{width:360px;margin:110px auto;background:var(--raised);border:1px solid var(--border-admin);border-radius:6px;padding:24px;font-size:13px}
+.login .f{border:1px solid var(--border-admin);border-radius:6px;padding:9px 10px;margin:6px 0 14px;color:var(--text2)}
+.act{color:var(--secondary);font-weight:600}
+
+</style></head><body>
+<h1 class="page">لوحة الأدمن — الدخول، اعتماد الموردين، الطلبات</h1><p class="page">ويب فقط</p>
+<div class="row"><div class="col"><div class="browser"><div class="bar"><span>● ● ●</span><span class="u">admin.tawzee.example/login</span></div><div style="min-height:520px;background:var(--admin)"><div class="login"><div class="h" style="font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:20px;margin-bottom:4px">تَوزيع · الأدمن</div><p class="muted" style="margin-bottom:16px">حسابات الأدمن يُنشئها فريق تَوزيع. لا يوجد تسجيل ذاتي.</p><strong>البريد الإلكتروني</strong><div class="f">admin@tawzee.example</div><strong>كلمة المرور</strong><div class="f">••••••••••</div><span class="btn a">تسجيل الدخول</span></div></div></div><div class="cap" style="max-width:820px">دخول الأدمن بحساب مُنشأ مسبقًا. (FR-16)</div></div></div><div class="row" style="margin-top:32px"><div class="col"><div class="browser"><div class="bar"><span>● ● ●</span><span class="u">admin.tawzee.example/suppliers/pending</span></div><div class="app"><div class="side"><div class="b">تَوزيع · الأدمن</div><div class="i on">اعتماد الموردين <span class="num">3</span></div><div class="i">الطلبات والمبيعات <span class="num"></span></div><div class="i">النزاعات <span class="num">2</span></div></div><div class="main"><h2>اعتماد الموردين</h2><table><tr><th>المنشأة</th><th>السجل التجاري</th><th>المدينة</th><th>تاريخ الطلب</th><th>الجوال</th><th>الحالة</th><th></th></tr><tr class="sel"><td>عطور الريم</td><td class="num">10104XXXXX</td><td>الرياض</td><td class="num">2026-11-15</td><td><span class="pill success">✓ موثَّق</span></td><td><span class="pill pending">◷ بانتظار المراجعة</span></td><td class="act">مراجعة</td></tr><tr><td>ألعاب المرح</td><td class="num">10107XXXXX</td><td>الرياض</td><td class="num">2026-11-15</td><td><span class="pill success">✓ موثَّق</span></td><td><span class="pill pending">◷ بانتظار المراجعة</span></td><td class="act">مراجعة</td></tr><tr><td>هدايا الشرق</td><td class="num">20501XXXXX</td><td>الدمام</td><td class="num">2026-11-14</td><td><span class="pill success">✓ موثَّق</span></td><td><span class="pill pending">◷ بانتظار المراجعة</span></td><td class="act">مراجعة</td></tr></table><div class="two"><div class="panel"><h3>عطور الريم</h3><div class="tl"><div><span>اسم المنشأة</span><span>عطور الريم</span></div><div><span>السجل التجاري</span><span class="num">10104XXXXX</span></div><div><span>المدينة</span><span>الرياض</span></div><div><span>وسيلة التواصل</span><span>بريد المنشأة</span></div></div><p class="muted" style="margin-top:10px">التحقق من السجل التجاري يدوي في النسخة الأولى.</p></div><div class="panel"><h3>القرار</h3><div class="opt on">اعتماد المورد <span>●</span></div><div class="opt">رفض الطلب (مع سبب يصل للمورد) <span>○</span></div><div style="font-weight:600">ملاحظة داخلية (اختيارية)</div><div class="in"></div><span class="btn a">تأكيد القرار وإشعار المورد</span></div></div></div></div></div><div class="cap" style="max-width:820px">اعتماد الموردين: قائمة الطلبات + مراجعة يدوية وقرار. (FR-9، UJ-2 الخطوة 3)</div></div></div><div class="row" style="margin-top:32px"><div class="col"><div class="browser"><div class="bar"><span>● ● ●</span><span class="u">admin.tawzee.example/orders</span></div><div class="app"><div class="side"><div class="b">تَوزيع · الأدمن</div><div class="i">اعتماد الموردين <span class="num">3</span></div><div class="i on">الطلبات والمبيعات <span class="num"></span></div><div class="i">النزاعات <span class="num">2</span></div></div><div class="main"><h2>الطلبات والمبيعات</h2><div class="kp"><div><b>47</b>طلبات هذا الشهر</div><div><b>182,300.00</b>قيمة الطلبات (ر.س)</div><div><b>9,115.00</b>عمولة تَوزيع 5% (ر.س)</div><div><b>12</b>موردًا نشطًا</div></div><table><tr><th>الطلب</th><th>جهة الطلب</th><th>المورد</th><th>التاريخ</th><th>القيمة</th><th>المبلغ</th><th>الحالة</th></tr><tr><td class="num">#1051</td><td>مدرسة الأفق الأهلية</td><td>قرطاسية النخبة</td><td class="num">2026-11-16</td><td class="num">2,175.00 ر.س</td><td class="muted">لم يُدفع</td><td><span class="pill pending">◷ بانتظار موافقة التخصيص</span></td></tr><tr><td class="num">#1042</td><td>مدرسة الأفق الأهلية</td><td>دار الهدايا</td><td class="num">2026-11-13</td><td class="num">6,400.00 ر.س</td><td>محجوز</td><td><span class="pill success">✓ تم الشحن</span></td></tr><tr><td class="num">#1038</td><td>شركة المدار</td><td>مصنع الخزف الحديث</td><td class="num">2026-11-11</td><td class="num">11,400.00 ر.س</td><td>محجوز</td><td><span class="pill success">✓ قيد التجهيز</span></td></tr><tr><td class="num">#1031</td><td>روضة البراعم</td><td>قرطاسية النخبة</td><td class="num">2026-11-08</td><td class="num">2,430.00 ر.س</td><td>صُرف للمورد</td><td><span class="pill success">✓ تم التسليم</span></td></tr><tr><td class="num">#1029</td><td>شركة المدار</td><td>مصنع الخزف الحديث</td><td class="num">2026-11-05</td><td class="num">11,400.00 ر.س</td><td>محجوز</td><td><span class="pill danger">متنازع عليه</span></td></tr></table></div></div></div><div class="cap" style="max-width:820px">مراقبة الطلبات والمبيعات: مؤشرات إجمالية وجدول كثيف يبيّن حالة المبلغ (محجوز/صُرف). (FR-11)</div></div></div>
+</body></html>

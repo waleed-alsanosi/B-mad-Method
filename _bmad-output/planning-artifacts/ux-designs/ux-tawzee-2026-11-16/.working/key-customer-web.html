@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ويب العميل — التصفح والدفع</title>
+<style>
+/* Governing spine sections: EXPERIENCE.md → Foundation (ويب العميل), IA (تطبيق/ويب العميل) · DESIGN.md → Layout & Spacing (3-4 أعمدة على الويب, gutter-web)
+   Tokens: DESIGN.md frontmatter (colors, rounded, spacing, components). Spines win on conflict. */
+
+:root{--primary:#B0561F;--primary-dark:#8A4217;--primary-tint:#F1DCC9;--secondary:#1F4B4A;--secondary-tint:#D9E6E5;
+--gold:#D4A13D;--base:#FBF7F1;--raised:#FFFFFF;--admin:#F4F6F6;--border:#E7DFD3;--border-admin:#DCE2E1;
+--text:#241C14;--text2:#6B5F50;--success:#256B46;--success-bg:#DCEFE2;--danger:#B3342A;--danger-bg:#F6DEDB;--warning:#C77C11}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"IBM Plex Sans Arabic",Tajawal,"Segoe UI",Tahoma,system-ui,sans-serif;background:#ECE6DC;color:var(--text);padding:32px 16px;line-height:1.6}
+h1.page{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:22px;text-align:center;margin-bottom:4px}
+p.page{text-align:center;color:var(--text2);font-size:13px;margin-bottom:28px}
+.row{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+.col{display:flex;flex-direction:column;align-items:center;gap:10px}
+.cap{font-size:13px;color:var(--text2);max-width:340px;text-align:center}
+.phone{width:340px;height:700px;background:var(--base);border-radius:36px;border:8px solid #2a2420;overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:0 12px 32px rgba(36,28,20,.18)}
+.status{height:30px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;font-size:12px;font-weight:600;flex:none}
+.top{padding:8px 16px 12px;display:flex;align-items:center;justify-content:space-between;flex:none}
+.top h2{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:20px}
+.top .sub{font-size:12px;color:var(--text2)}
+.scroll{flex:1;overflow:hidden;padding:0 16px 16px}
+.h{font-family:Tajawal,system-ui,sans-serif;font-weight:700}
+.btn{display:block;width:100%;text-align:center;padding:12px 24px;border-radius:10px;font-weight:600;font-size:15px;border:none;font-family:inherit}
+.btn.p{background:var(--primary);color:#fff}
+.btn.s{background:transparent;border:1px solid var(--secondary);color:var(--secondary)}
+.btn.d{background:transparent;border:1px solid var(--danger);color:var(--danger)}
+.pill{display:inline-block;white-space:nowrap;border-radius:9999px;padding:4px 12px;font-size:12px;font-weight:600}
+.pill.pending{background:var(--primary-tint);color:var(--primary-dark)}
+.pill.success{background:var(--success-bg);color:var(--success)}
+.pill.danger{background:var(--danger-bg);color:var(--danger)}
+.card{background:var(--raised);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 1px 3px rgba(36,28,20,.06)}
+.num{font-variant-numeric:tabular-nums;font-weight:500}
+.muted{color:var(--text2);font-size:13px}
+.line{display:flex;justify-content:space-between;font-size:14px;padding:6px 0}
+.line.total{border-top:1px solid var(--border);margin-top:6px;padding-top:10px;font-weight:600;font-size:16px}
+.nav{height:60px;border-top:1px solid var(--border);background:var(--raised);display:flex;justify-content:space-around;align-items:center;font-size:11px;color:var(--text2);flex:none}
+.nav .on{color:var(--primary);font-weight:600}
+
+.search{background:var(--raised);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--text2);margin-bottom:12px}
+.chips{display:flex;gap:8px;overflow:hidden;margin-bottom:14px;white-space:nowrap}
+.chip{border:1px solid var(--border);background:var(--raised);border-radius:9999px;padding:6px 12px;font-size:13px;flex:none}
+.chip.on{background:var(--secondary);border-color:var(--secondary);color:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.prod{background:var(--raised);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(36,28,20,.06)}
+.img{height:112px;position:relative;display:flex;align-items:center;justify-content:center;font-size:12px;color:rgba(36,28,20,.55)}
+.badge{position:absolute;top:8px;right:8px;background:var(--gold);color:var(--text);border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:600}
+.pb{padding:10px 12px 12px}
+.pb .n{font-weight:600;font-size:14px;line-height:1.4}
+.pb .s{font-size:12px;color:var(--text2)}
+.pb .p{margin-top:6px;font-size:14px}
+.empty{text-align:center;padding:70px 12px 0}
+.empty .h{font-size:18px;margin-bottom:8px}
+
+.timer{background:var(--primary-tint);border-radius:16px;padding:16px;text-align:center;margin:12px 0}
+.timer .t{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:30px;color:var(--primary-dark);font-variant-numeric:tabular-nums}
+.sum{display:flex;gap:12px;align-items:center}
+.th{width:56px;height:56px;border-radius:10px;background:#E4EBDD;flex:none}
+.logo{display:flex;gap:10px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:13px}
+.lg{width:40px;height:40px;border-radius:6px;background:var(--secondary-tint);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--secondary);flex:none}
+.toggle{display:grid;grid-template-columns:1fr 1fr;background:var(--border);border-radius:10px;padding:3px;margin:12px 0;font-size:13px;text-align:center}
+.toggle span{padding:8px;border-radius:8px}
+.toggle .on{background:var(--raised);font-weight:600}
+.foot{padding:12px 16px 16px;border-top:1px solid var(--border);background:var(--raised);flex:none;display:flex;flex-direction:column;gap:8px}
+.reason{background:var(--danger-bg);border-radius:10px;padding:12px;font-size:14px;margin:12px 0}
+
+.field{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--raised);font-size:14px;display:flex;justify-content:space-between;margin-top:6px}
+.lbl{font-size:13px;font-weight:600;margin-top:14px}
+.prev{height:72px;border-radius:10px;background:var(--secondary-tint);display:flex;align-items:center;justify-content:center;color:var(--secondary);font-size:13px;margin-top:8px}
+.foot{padding:12px 16px 16px;border-top:1px solid var(--border);background:var(--raised);flex:none;display:grid;grid-template-columns:2fr 1fr;gap:8px}
+.oc{margin-bottom:10px}
+.oc .r{display:flex;justify-content:space-between;align-items:center}
+
+.otp{display:flex;gap:8px;justify-content:center;direction:ltr;margin:20px 0}
+.otp span{width:42px;height:52px;border:1px solid var(--border);border-radius:10px;background:var(--raised);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600}
+.otp span.f{border-color:var(--secondary);border-width:2px}
+.hero{height:190px;background:#E4EBDD;border-radius:16px;display:flex;align-items:center;justify-content:center;color:rgba(36,28,20,.55);font-size:13px;position:relative;margin-bottom:12px}
+.tier{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0}
+.tier div{border:1px solid var(--border);border-radius:10px;background:var(--raised);padding:8px;text-align:center;font-size:12px}
+.tier div.on{border-color:var(--secondary);background:var(--secondary-tint)}
+.tier b{display:block;font-size:15px}
+.qty{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:10px;background:var(--raised);padding:8px 12px;margin-top:6px}
+.qty span.b{width:32px;height:32px;border-radius:8px;background:var(--base);display:flex;align-items:center;justify-content:center;font-weight:600}
+.drop{border:1.5px dashed var(--secondary);border-radius:10px;padding:14px;text-align:center;font-size:13px;color:var(--secondary);margin-top:6px;background:var(--secondary-tint)}
+.steps{margin:12px 0}
+.steps div{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:14px}
+.dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);flex:none;margin-top:3px}
+.dot.d{background:var(--success);border-color:var(--success)}
+.dot.c{border-color:var(--primary);background:var(--primary-tint)}
+.msgs{display:flex;flex-direction:column;gap:8px}
+.m{max-width:78%;padding:9px 12px;border-radius:16px;font-size:14px}
+.m.s{background:var(--secondary);color:#fff;align-self:flex-start}
+.m.r{background:var(--raised);border:1px solid var(--border);align-self:flex-end}
+.warn{background:var(--primary-tint);color:var(--primary-dark);border-radius:10px;padding:10px 12px;font-size:13px}
+.compose{border:1px solid var(--border);border-radius:9999px;background:var(--raised);padding:10px 16px;font-size:14px;color:var(--text2)}
+.li{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--border);font-size:14px}
+.area{border:1px solid var(--border);border-radius:10px;background:var(--raised);padding:10px 12px;font-size:14px;min-height:76px;margin-top:6px;color:var(--text2)}
+.pi{display:flex;gap:12px;align-items:center}
+.web{width:1080px;max-width:100%;background:var(--base);border-radius:12px;border:1px solid #c9c2b6;overflow:hidden;box-shadow:0 12px 32px rgba(36,28,20,.18)}
+.wnav{display:flex;align-items:center;gap:24px;padding:14px 24px;background:var(--raised);border-bottom:1px solid var(--border);font-size:14px}
+.wnav .b{font-family:Tajawal,system-ui,sans-serif;font-weight:800;font-size:20px}
+.wnav .sp{flex:1}
+.wbody{padding:24px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.w2{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+
+</style></head><body>
+<h1 class="page">ويب العميل — التصفح والدفع</h1><p class="page">نسخة الويب لجهة الطلب (المدارس والشركات تطلب من الكمبيوتر)</p>
+<div class="row"><div class="col"><div class="web"><div class="wnav"><span class="b">تَوزيع</span><span style="color:var(--primary);font-weight:600">التصفح</span><span>طلباتي</span><span>المحادثات</span><span class="sp"></span><span class="muted">مدرسة الأفق الأهلية ▾</span></div><div class="wbody"><div class="search" style="max-width:520px">ابحث عن توزيعات…</div><div class="chips"><span class="chip on">500+ قطعة ✕</span><span class="chip on">الرياض ✕</span><span class="chip">المناسبة ▾</span><span class="chip">نوع المنتج ▾</span></div><div class="muted" style="margin-bottom:12px">86 منتجًا من 12 موردًا معتمدًا</div><div class="g4"><div class="prod"><div class="img" style="background:#E4EBDD"><span class="badge">اليوم الوطني</span>صورة المنتج</div><div class="pb"><div class="n">صندوق هدية صغير بشريط أخضر</div><div class="s">دار الهدايا · الرياض</div><div class="p"><span class="num">12.00</span> ر.س <span class="muted">/ للوحدة عند 500+</span></div></div></div><div class="prod"><div class="img" style="background:#EDE3D2">صورة المنتج</div><div class="pb"><div class="n">كوب سيراميك بعلم المملكة</div><div class="s">مصنع الخزف الحديث · الرياض</div><div class="p"><span class="num">9.50</span> ر.س <span class="muted">/ للوحدة عند 500+</span></div></div></div><div class="prod"><div class="img" style="background:#DDE7E6"><span class="badge">يوم المعلم</span>صورة المنتج</div><div class="pb"><div class="n">دفتر وقلم بغلاف وطني</div><div class="s">قرطاسية النخبة · الرياض</div><div class="p"><span class="num">7.25</span> ر.س <span class="muted">/ للوحدة عند 500+</span></div></div></div><div class="prod"><div class="img" style="background:#E9E1EE">صورة المنتج</div><div class="pb"><div class="n">علم مكتبي مع قاعدة</div><div class="s">أعلام الوطن · الرياض</div><div class="p"><span class="num">4.75</span> ر.س <span class="muted">/ للوحدة عند 500+</span></div></div></div><div class="prod"><div class="img" style="background:#EDE3D2">صورة المنتج</div><div class="pb"><div class="n">حقيبة قماشية مطبوعة</div><div class="s">دار الهدايا · الرياض</div><div class="p"><span class="num">11.00</span> ر.س <span class="muted">/ للوحدة عند 500+</span></div></div></div><div class="prod"><div class="img" style="background:#E4EBDD">صورة المنتج</div><div class="pb"><div class="n">مجموعة أقلام ملوّنة</div><div class="s">قرطاسية النخبة · الرياض</div><div class="p"><span class="num">6.50</span> ر.س <span class="muted">/ للوحدة عند 500+</span></div></div></div><div class="prod"><div class="img" style="background:#E9E1EE">صورة المنتج</div><div class="pb"><div class="n">عطر مغلّف صغير</div><div class="s">عطور الريم · الرياض</div><div class="p"><span class="num">18.00</span> ر.س <span class="muted">/ للوحدة عند 500+</span></div></div></div><div class="prod"><div class="img" style="background:#DDE7E6">صورة المنتج</div><div class="pb"><div class="n">لعبة تركيب للأطفال</div><div class="s">ألعاب المرح · الرياض</div><div class="p"><span class="num">8.25</span> ر.س <span class="muted">/ للوحدة عند 500+</span></div></div></div></div></div></div><div class="cap" style="max-width:820px">ويب العميل — التصفح: نفس المكونات بشبكة 4 أعمدة وشريط تنقل علوي بدل السفلي. (FR-1، Responsive)</div></div></div><div class="row" style="margin-top:32px"><div class="col"><div class="web"><div class="wnav"><span class="b">تَوزيع</span><span style="color:var(--primary);font-weight:600">التصفح</span><span>طلباتي</span><span>المحادثات</span><span class="sp"></span><span class="muted">مدرسة الأفق الأهلية ▾</span></div><div class="wbody"><div class="muted">طلباتي ‹ طلب #1042</div><h2 class="h" style="font-size:22px;margin:4px 0 12px">طلب #1042 <span class="pill success">✓ وافق المورد — بانتظار الدفع</span></h2><div class="w2"><div><div class="card"><div class="sum"><div class="th"></div><div><div style="font-weight:600;font-size:14px">صندوق هدية صغير بشريط أخضر</div><div class="muted"><span class="num">500</span> قطعة · دار الهدايا</div></div></div><div class="logo"><div class="lg">شعار</div><div>شعار-المدرسة.png<div class="muted">تخصيص بالشعار مطلوب</div></div></div></div><div class="card" style="margin-top:16px"><div class="h" style="margin-bottom:6px">طريقة الاستلام</div><div class="toggle" style="max-width:340px"><span class="on">توصيل</span><span>استلام من المورد</span></div><div class="muted">التوصيل إلى: مدرسة الأفق الأهلية، حي الملقا، الرياض</div></div></div><div class="card"><div class="h" style="margin-bottom:6px">ملخص الدفع</div><div class="line"><span>المنتجات (<span class="num">500 × 12.00</span>)</span><span class="num">6,000.00 ر.س</span></div><div class="line"><span>رسوم التخصيص <span class="muted">(حددها المورد)</span></span><span class="num">250.00 ر.س</span></div><div class="line"><span>التوصيل</span><span class="num">150.00 ر.س</span></div><div class="line total"><span>الإجمالي</span><span class="num">6,400.00 ر.س</span></div><div class="muted" style="margin:10px 0">يُحجز المبلغ لدى تَوزيع ولا يُصرف للمورد إلا بعد تأكيدك الاستلام.</div><span class="btn p">ادفع 6,400.00 ر.س</span><div style="height:8px"></div><span class="btn s">محادثة المورد</span></div></div></div></div><div class="cap" style="max-width:820px">ويب العميل — الدفع بعد موافقة المورد: نفس محتوى الموبايل في عمودين. (FR-5، FR-13، FR-14)</div></div></div>
+</body></html>
