@@ -32,17 +32,17 @@ typography:
     fontFamily: "Tajawal, system-ui, sans-serif"
     fontWeight: 700
   body:
-    fontFamily: "IBM Plex Sans Arabic, system-ui, sans-serif"
+    fontFamily: "Tajawal, system-ui, sans-serif"
     fontWeight: 400
   body-emphasis:
-    fontFamily: "IBM Plex Sans Arabic, system-ui, sans-serif"
+    fontFamily: "Tajawal, system-ui, sans-serif"
     fontWeight: 600
   numeric:
-    fontFamily: "IBM Plex Sans Arabic, system-ui, sans-serif"
+    fontFamily: "Tajawal, system-ui, sans-serif"
     fontWeight: 500
     note: "أرقام جدولية (tabular figures) لمحاذاة الأسعار والكميات في الجداول"
   caption:
-    fontFamily: "IBM Plex Sans Arabic, system-ui, sans-serif"
+    fontFamily: "Tajawal, system-ui, sans-serif"
     fontWeight: 400
     fontSize: "0.8125rem"
 rounded:
@@ -125,7 +125,7 @@ components:
 
 - **{typography.display}** (Tajawal، وزن 800) — العناوين الكبيرة فقط (شاشة البداية، اسم المناسبة، عنوان المنتج الرئيسي). الأثر الاحتفالي يتركّز هنا.
 - **{typography.heading}** (Tajawal، وزن 700) — عناوين الأقسام والبطاقات.
-- **{typography.body}** / **{typography.body-emphasis}** (IBM Plex Sans Arabic) — كل نص تشغيلي: أوصاف المنتجات، رسائل الشات، نصوص الأدمن. خط عالي الوضوح عبر كل الأوزان، يخدم الكثافة العالية في الجداول بقدر ما يخدم وصف منتج دافئ.
+- **{typography.body}** / **{typography.body-emphasis}** (Tajawal، وزن 400 و500–700) — كل نص تشغيلي: أوصاف المنتجات، رسائل الشات، نصوص الأدمن. الخط موحّد مع العناوين لأن IBM Plex Sans Arabic غير متاح في ملف فيغما؛ اعتُمد Tajawal لعائلة واحدة عبر كل الأسطح.
 - **{typography.numeric}** — أرقام الأسعار والكميات تستخدم أرقامًا جدولية (tabular) لمحاذاة الأعمدة في جداول الأدمن وملخصات السلة.
 - كلا الخطين يدعمان العربية كلغة أساسية؛ أي نص إنجليزي (أسماء العلامات التجارية، SKU) يُعرض بنفس العائلة إن توفرت، أو بخط نظام افتراضي محايد.
 
@@ -152,6 +152,14 @@ components:
 - **status-pill** — حالة الطلب (بانتظار الموافقة / مقبول / مرفوض) بثلاثة تلوينات دلالية (pending/success/danger) — تُستخدم في كل من تطبيق العميل والمورد ولوحة الأدمن بنفس المنطق.
 - **chat-bubble** — فقاعة مرسلة بلون الثقة، مستلمة بخلفية بيضاء وحدّ خفيف — يعكس أن الشات (FR-7) مساحة محايدة وآمنة، لا مساحة بيع.
 - **admin-table-row** — صف جدول كثيف بحد سفلي خفيف، بلا ظل، مع تمييز عند المرور (hover) بلون surface-admin.
+
+## نظام التصميم في فيغما
+
+الملف: https://www.figma.com/design/xo8TVFRlfd4MimTajXSgCn
+
+- **المتغيرات (78):** مجموعة `Primitives` (25 لونًا أوليًا مخفيًا)، `Color` (33 لونًا دلاليًا يشير كلٌّ منها إلى لون أولي)، `Spacing` (13)، `Radius` (7). أسماء المتغيرات الدلالية تطابق رموز هذه الوثيقة مع بادئة `color/` وتجميع بالشرطة المائلة (مثل `color/brand/primary`).
+- **أنماط النصوص (14)** وأنماط الظل (2): `shadow/card` و`shadow/overlay`.
+- **المكوّنات (33) والأيقونات (33)** في صفحة «المكوّنات»، وكل تعبئاتها وحدودها ومسافاتها وزواياها مربوطة بالمتغيرات.
 
 ## ما يجب وما لا يجب (Do's and Don'ts)
 
